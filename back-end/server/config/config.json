@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "root",
+    "password": "",
+    "database": "period-dev",
+    "host": "localhost",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": null,
+    "password": null,
+    "database": "period-dev",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": null,
+    "password": null,
+    "database": "period-dev",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}
