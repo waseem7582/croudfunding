@@ -1,7 +1,7 @@
 {
-  "name": "donate-period",
+  "name": "croudfunding",
   "version": "1.0.0",
-  "description": "Charity Donation Web App",
+  "description": "croudfunding Web App",
   "main": "app.js",
   "scripts": {
     "start": "nodemon app.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/simone-smith/donate-period.git"
+    "url": ""
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/simone-smith/donate-period/issues"
+    "url": ""
   },
-  "homepage": "https://github.com/simone-smith/donate-period#readme",
+  "homepage": "",
   "dependencies": {
     "axios": "^1.2.1",
     "body-parser": "^1.18.3",

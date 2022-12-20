@@ -9,46 +9,55 @@ module.exports = {
     let to = 'USD';
     let from = req.body.currency;
     let amount = req.body.amount;
-    
-    const response = await axios.get(`https://api.apilayer.com/exchangerates_data/convert?amount=${amount}&from=${from}&to=${to}`, {
+
+    // console.log(req.body.currency);
+    if (req.body.currency !=='' && amount !== '' && req.body.name !== '') {
+      const response = await axios.get(`https://api.apilayer.com/exchangerates_data/convert?amount=${amount}&from=${from}&to=${to}`, {
         headers: {
             apikey: 'FK6zt7NU68HHRNTVBB2G6bzQC17VfNMU',
             "Accept-Encoding": "gzip,deflate,compress",
         }
-    });
-      
-    let donate = donator
-      .create({
-        nickname: req.body.name,
-        amount: response.data.result,
-        state: "valid",
-        campaignId: req.body.id,
       });
       
+      let donate = donator
+        .create({
+          nickname: req.body.name,
+          amount: response.data.result,
+          state: "valid",
+          campaignId: req.body.id,
+      });
+        
       return campaign
-      .findByPk(req.body.id)
-      .then(campaigns => {
-        if (!campaigns) {
-          return res.status(404).send({
-            message: 'campaigns not found',
-          });
-        } else {
-          let update_amount = response.data.result + campaigns.received_amount;
-          campaign.update(
-            { received_amount: update_amount },
-            { where: { id: req.body.id } }
-          );
-
-          if (campaigns.amount <= update_amount) {
+        .findByPk(req.body.id)
+        .then(campaigns => {
+          if (!campaigns) {
+            return res.status(404).send({
+              message: 'campaigns not found',
+            });
+          } else {
+            let update_amount = response.data.result + campaigns.received_amount;
             campaign.update(
-              { status: "successful" },
+              { received_amount: update_amount },
               { where: { id: req.body.id } }
             );
+
+            if (campaigns.amount <= update_amount) {
+              campaign.update(
+                { status: "successful" },
+                { where: { id: req.body.id } }
+              );
+            }
           }
-        }
-        res.status(200).send({ message: 'amount donate successfully',});
+          res.status(200).send({ message: 'amount donate successfully',});
       })
       .catch(error => res.status(400).send(error));
+    } else {
+      return res.status(500).send({
+        status: false,
+        message: 'input feild missing',
+      })
+    }
+    
   },
   list(req, res) {
     return campaign

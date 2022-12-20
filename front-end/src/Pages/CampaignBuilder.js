@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Campaign from './PageComponents/Campaign.js';
+import { Link } from 'react-router-dom'
 
 class CampaignBuilder extends Component {
   constructor(props) {
@@ -30,6 +31,11 @@ class CampaignBuilder extends Component {
     const { campaigns } = this.state;
     return (
       <div>
+        <p className="p-4 text-monospace text-left text-secondary">
+             <Link to={'/'}>
+                <button className="btn btn-primary active" type="button">BACK</button>
+             </Link>
+          </p>
         <div>
           <h1 className="p-4 display-4 text-center"> Crowd Funding List </h1>
         </div>

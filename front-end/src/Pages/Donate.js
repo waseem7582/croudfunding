@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
+import { withRouter } from "react-router";
 import axios from 'axios';
 
 class Donate extends Component {
@@ -16,26 +17,9 @@ class Donate extends Component {
             amount: '',
             id: '',
             currency:'',
-            currencies: []
+            currencies: [],
+            inputErrors : ''
         }
-    }
-
-    componentDidMount() {
-        fetch('http://localhost:3002/api/currency', {
-          method: "GET",
-          headers: {
-            "Content-Type" : "application/json"
-          },
-        })
-          .then(res => res.json())
-          .then(
-            (result) => {
-                // console.log(result);
-              this.setState({
-                currencies: result
-              });
-            },
-          )
     }
 
     onChangeName(e) {
@@ -61,20 +45,41 @@ class Donate extends Component {
         };
         axios.post('http://localhost:3002/api/donate', Object)
             .then((res) => {
+                this.props.history.push('/ThankYou');
                 console.log(res.data)
             }).catch((error) => {
                 console.log(error)
+                this.setState({inputErrors: 'input fields missings'});
+                
             });
         this.setState({ name: '', amount: '', id:'', currency:'' })
     }
-
-    
+    componentDidMount() {
+        fetch('http://localhost:3002/api/currency', {
+          method: "GET",
+          headers: {
+            "Content-Type" : "application/json"
+          },
+        })
+          .then(res => res.json())
+          .then(
+            (result) => {
+                // console.log(result);
+              this.setState({
+                currencies: result
+              });
+            },
+          )
+    }
   render() {
     const { currencies } = this.state;
+
     return (
       <div>
           <p className="p-4 text-monospace text-left text-secondary">
-              <button className="btn btn-primary active" type="button">BACK</button>
+             <Link to={'/Campaigns'}>
+                <button className="btn btn-primary active" type="button">BACK</button>
+             </Link>
           </p>
           <div className="pageContainer">
               <div className="d-flex">
@@ -83,17 +88,17 @@ class Donate extends Component {
                           <h4 className={"mb-4"}>Donation Info</h4>
                           <form onSubmit={this.onSubmit}>
                             <div className="form-group">
-                                <input className="form-control form-control-m" type="text" value={this.state.name} onChange={this.onChangeName} id="name" placeholder="Name"/>
+                                <input className="form-control form-control-m" type="text" value={this.state.name} onChange={this.onChangeName} id="name" placeholder="Name" required/>
                             </div>
                             <div className="form-group">
-                                <input className="form-control form-control-m" type="number" value={this.state.amount} onChange={this.onChangeAmount} id="amount" placeholder="amount"/>
+                                <input className="form-control form-control-m" type="number" value={this.state.amount} onChange={this.onChangeAmount} id="amount" placeholder="amount" required/>
                             </div>
                             <div className="form-group">
                                 <input className="form-control form-control-m" style={{display:"none"}} type="text" value={this.id} onChange={this.onChangeId} id="id" />
                             </div>
                             <br></br>
                             <div className="form-inline">
-                            <select className="form-control form-control-m"  onChange={this.onChangeCurrency} id="currency">
+                            <select className="form-control form-control-m"  onChange={this.onChangeCurrency} id="currency" required>
                                 {/* {currencies.map((currency) => {
                                     <option value="us">{currency['country']}</option>
                                 })} */}

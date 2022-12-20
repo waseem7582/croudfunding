@@ -12,7 +12,7 @@ class Donate extends Component {
                 </p>
 
                 <p className="p-4 text-monospace text-center text-secondary">
-                <Link to={'/Charities'}>
+                <Link to={'/Campaigns'}>
                     <button className="btn btn-primary active" type="button">Donate to another crowdfunding!</button>
                 </Link>
                 </p>
